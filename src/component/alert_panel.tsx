@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 
 export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , status: string}) {
 
-  console.log(city)
+  
   const GetAlertConfig = () => {
     switch (status) {
       case "Bon":

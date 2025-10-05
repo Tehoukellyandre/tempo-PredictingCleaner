@@ -9,6 +9,7 @@ import { useCurrentPosition } from "@/hooks/position_hook";
 import Skeleton from "@mui/material/Skeleton";
 import { useGetAtmosphericData } from "@/hooks/query";
 import { AirQualityMetrics } from "./display_give_organic";
+import { PredictionPanel} from "@/component/prediction_panel"
 
 export function Dashboard() {
     const [value, setValue] = useState('1');
@@ -61,6 +62,7 @@ export function Dashboard() {
                             <TabPanel value="1"  className="space-y-6">
                                 <AlertPanel city={atmosphericData.city} aqi={atmosphericData.aqi} status={atmosphericData.etat} />
                                 <AirQualityMetrics  pollutants ={atmosphericData.components}  aqi = {atmosphericData.aqi}  status={atmosphericData.etat} />
+                                <PredictionPanel location={atmosphericData.city} />
                             </TabPanel>
                             <TabPanel value="2">
                                 Item Two
