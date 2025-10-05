@@ -11,11 +11,12 @@ import { useGetAtmosphericData, useGetAtmosphericPrevisionData } from "@/hooks/q
 import { AirQualityMetrics } from "./display_give_organic";
 import { PredictionPanel} from "@/component/prediction_panel"
 import { AirQualityMapByAqi } from "./air_quality_map";
+import SelectVilles from "./SelectCities";
 // import { AirForecastChart } from "./SelectCities";
 
 export function Dashboard() {
     const [value, setValue] = useState('1');
-    const { position, error, loading } = useCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
+    const { position, error, loading  } = useCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
     const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
@@ -37,7 +38,7 @@ export function Dashboard() {
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3">
-                                {/* Add header actions here if needed */}
+                                <SelectVilles />
                             </div>
                         </div>
 
