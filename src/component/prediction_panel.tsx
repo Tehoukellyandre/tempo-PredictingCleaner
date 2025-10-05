@@ -1,43 +1,49 @@
 import { Card } from "@mui/material"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceLine,
+} from "recharts"
 import { TrendingUp, Brain, AlertCircle } from "lucide-react"
 
-
-
-
-export function PredictionPanel({ dataPrevision : atmosphericPrevision}) {
-  
+export function PredictionPanel({ dataPrevision : atmosphericPrevision }) {
   const chartData = atmosphericPrevision?.map((p: any) => ({
-    time: new Date(p.timestamp).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+    time: new Date(p.timestamp).toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
     aqi: p.aqi,
     pm2_5: p.components.pm2_5 * 100,
   }))
 
   const maxAQI = Math.max(...chartData.map((d: any) => d.aqi))
-  const avgConfidence = (chartData.reduce((sum: number, d: any) => sum + d.confidence, 0) / chartData.length).toFixed(0)
 
   return (
     <Card className="p-6">
-      <div className="mb-6 flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Prédictions IA - 48 heures</h3>
-          </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Basé sur les données TEMPO, météo et patterns historiques
-          </p>
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <Brain className="h-5 w-5 text-primary" />
+          <h3 className="text-lg font-semibold">Prédictions IA - 48 heures</h3>
         </div>
-        <div className="text-right">
-          <div className="text-2xl font-bold text-primary">{avgConfidence}%</div>
-          <div className="text-xs text-muted-foreground">Confiance moyenne</div>
-        </div>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Basé sur les données TEMPO, météo et patterns historiques
+        </p>
       </div>
 
       <ResponsiveContainer width="100%" height={350}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-          <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" fontSize={11} interval={5} />
+          <XAxis
+            dataKey="time"
+            stroke="hsl(var(--muted-foreground))"
+            fontSize={11}
+            interval={5}
+          />
           <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
           <Tooltip
             contentStyle={{
@@ -83,7 +89,9 @@ export function PredictionPanel({ dataPrevision : atmosphericPrevision}) {
             <AlertCircle className="h-4 w-4" />
             <span>Alertes prévues</span>
           </div>
-          <div className="mt-2 text-2xl font-bold">{chartData.filter((d: any) => d.aqi > 100).length}</div>
+          <div className="mt-2 text-2xl font-bold">
+            {chartData.filter((d: any) => d.aqi > 100).length}
+          </div>
           <div className="mt-1 text-xs text-muted-foreground">Périodes à surveiller</div>
         </div>
       </div>

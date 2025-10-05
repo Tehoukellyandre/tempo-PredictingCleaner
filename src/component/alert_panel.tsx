@@ -24,7 +24,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air excellente
             </Typography>
-            La qualité de l'air à {city} est actuellement bonne (AQI: {aqi}). Profitez pleinement de vos activités extérieures !
+           {!temps  && `La qualité de l'air à ${city} est actuellement bonne (AQI: ${aqi}). Profitez pleinement de vos activités extérieures !`}
           {temps && `Demain l'air a ${city} sera bonne (AQI :${aqi}). Profitez pleinement de vos activités extérieures ! `}
           </Alert>
         );
@@ -42,8 +42,8 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air modérée
             </Typography>
-            La qualité de l'air à {city} est modérée (AQI: {aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.
-          {temps && ` Demain la qualité de l'air à ${city} sera  modérée (AQI: ${aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`  }
+            {temps && `La qualité de l'air à {city} est modérée (AQI: {aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`}
+           {temps && ` Demain la qualité de l'air à ${city} sera  modérée (AQI: ${aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`  }
           </Alert>
         );
       case "Mauvais":
@@ -60,7 +60,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air mauvaise
             </Typography>
-            La qualité de l'air à {city} est mauvaise (AQI: {aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.
+            {temps && `La qualité de l'air à ${city} est mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           {temps && `Demain la qualité de l'air à ${city} sera mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
@@ -78,7 +78,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air très mauvaise
             </Typography>
-            La qualité de l'air à {city} est très mauvaise (AQI: {aqi}). Évitez les activités extérieures autant que possible.
+            {temps && `La qualité de l'air à ${city} est très mauvaise (AQI: ${aqi}). Évitez les activités extérieures autant que possible.`}
           {temps && `Demain la qualité de l'air à ${city} sera très trmauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
@@ -97,7 +97,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air dangereuse
             </Typography>
-            La qualité de l'air à {city} est dangereuse (AQI: {aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.
+           {temps &&` La qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
          {temps && ` Demain la  qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
           </Alert>
         );
