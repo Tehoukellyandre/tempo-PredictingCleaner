@@ -1,30 +1,16 @@
 import { Card } from "@mui/material"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from "recharts"
 import { TrendingUp, Brain, AlertCircle } from "lucide-react"
-import useSWR from "swr"
-import { Skeleton } from "@mui/material"
 
 
 
-export function PredictionPanel({ location }: { location:string}) {
-  const { data, isLoading } = useSWR(`/api/predict?location=${location}&hours=24`, (url) =>
-    fetch(url ).then((r) => r.json()),
-  )
 
-  if (isLoading) {
-    return (
-      <Card className="p-6">
-        <Skeleton className="h-[400px] w-full" />
-      </Card>
-    )
-  }
-
-  if (!data?.predictions) return null
-
-  const chartData = data.predictions.map((p: any) => ({
+export function PredictionPanel({ dataPrevision : atmosphericPrevision}) {
+  
+  const chartData = atmosphericPrevision?.map((p: any) => ({
     time: new Date(p.timestamp).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
     aqi: p.aqi,
-    confidence: p.confidence * 100,
+    pm2_5: p.components.pm2_5 * 100,
   }))
 
   const maxAQI = Math.max(...chartData.map((d: any) => d.aqi))

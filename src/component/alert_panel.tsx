@@ -1,11 +1,15 @@
 import Alert from "@mui/material/Alert"
 import Typography from "@mui/material/Typography"
+import type { Position } from "..";
+import { useGetAtmosphericPrevisionData } from "@/hooks/query";
+import { useMemo } from "react";
+import { Skeleton } from "@mui/material";
+import { useCurrentPosition } from "@/hooks/position_hook";
 
-export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , status: string}) {
 
-  
-  const GetAlertConfig = () => {
-    switch (status) {
+export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrevision } :{ city:string , aqi : string , status: string  , dataPrevision: any }) {
+  const GetAlertConfigForCurrentAir = ({etat , temps}:{etat: string , temps?: boolean}) => {
+    switch (etat) {
       case "Bon":
         return (
           <Alert
@@ -21,6 +25,7 @@ export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , 
               Qualité de l'air excellente
             </Typography>
             La qualité de l'air à {city} est actuellement bonne (AQI: {aqi}). Profitez pleinement de vos activités extérieures !
+          {temps && `Demain l'air a ${city} sera bonne (AQI :${aqi}). Profitez pleinement de vos activités extérieures ! `}
           </Alert>
         );
       case "Modéré":
@@ -38,6 +43,7 @@ export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , 
               Qualité de l'air modérée
             </Typography>
             La qualité de l'air à {city} est modérée (AQI: {aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.
+          {temps && ` Demain la qualité de l'air à ${city} sera  modérée (AQI: ${aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`  }
           </Alert>
         );
       case "Mauvais":
@@ -55,6 +61,7 @@ export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , 
               Qualité de l'air mauvaise
             </Typography>
             La qualité de l'air à {city} est mauvaise (AQI: {aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.
+          {temps && `Demain la qualité de l'air à ${city} sera mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
       case "Très Mauvais":
@@ -72,6 +79,7 @@ export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , 
               Qualité de l'air très mauvaise
             </Typography>
             La qualité de l'air à {city} est très mauvaise (AQI: {aqi}). Évitez les activités extérieures autant que possible.
+          {temps && `Demain la qualité de l'air à ${city} sera très trmauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
       case "Dangereux":
@@ -90,16 +98,23 @@ export function AlertPanel({city , aqi ,status} :{ city:string , aqi : string , 
               Qualité de l'air dangereuse
             </Typography>
             La qualité de l'air à {city} est dangereuse (AQI: {aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.
+         {temps && ` Demain la  qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
           </Alert>
         );
       default:
         return null;
     }
   };
-
+ 
+  const getStatusForTomorrowPrevisison =  useMemo(()=>{
+    return   atmosphericPrevision  ? atmosphericPrevision[9] .etat : "" ;
+  },atmosphericPrevision)
 
 
   return (
-      <GetAlertConfig />
+      <>
+         <GetAlertConfigForCurrentAir  etat={status} />
+        {  atmosphericPrevision ? <GetAlertConfigForCurrentAir  etat={getStatusForTomorrowPrevisison} temps={true} /> :<Skeleton/>}
+      </>
   )
 }

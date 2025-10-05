@@ -11,7 +11,7 @@ export function Header() {
               <Satellite className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-bold">TEMPO Air Quality</h1>
+            <h1 className="text-lg font-bold">CleanSky</h1>
             <p className="text-xs text-muted-foreground">NASA Mission</p>
           </div>
         </div>

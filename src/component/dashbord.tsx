@@ -7,9 +7,11 @@ import { Map, BarChart3 } from "lucide-react";
 import { AlertPanel } from "./alert_panel";
 import { useCurrentPosition } from "@/hooks/position_hook";
 import Skeleton from "@mui/material/Skeleton";
-import { useGetAtmosphericData } from "@/hooks/query";
+import { useGetAtmosphericData, useGetAtmosphericPrevisionData } from "@/hooks/query";
 import { AirQualityMetrics } from "./display_give_organic";
 import { PredictionPanel} from "@/component/prediction_panel"
+import { AirQualityMapByAqi } from "./air_quality_map";
+// import { AirForecastChart } from "./SelectCities";
 
 export function Dashboard() {
     const [value, setValue] = useState('1');
@@ -17,8 +19,8 @@ export function Dashboard() {
     const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
-
     const { data: atmosphericData, isLoading: atmosphericLoading } = useGetAtmosphericData(position ? position : null);
+    const {data : atmosphericPrevision , isLoading : atmosphericPrevisionLoading }  = useGetAtmosphericPrevisionData(position ? position : null)
     return (
         <>
             {!atmosphericLoading &&  atmosphericData ? (
@@ -60,12 +62,12 @@ export function Dashboard() {
                             </TabList>
 
                             <TabPanel value="1"  className="space-y-6">
-                                <AlertPanel city={atmosphericData.city} aqi={atmosphericData.aqi} status={atmosphericData.etat} />
+                                <AlertPanel city={atmosphericData.city} aqi={atmosphericData.aqi} status={atmosphericData.etat}  dataPrevision = {atmosphericPrevision} />
                                 <AirQualityMetrics  pollutants ={atmosphericData.components}  aqi = {atmosphericData.aqi}  status={atmosphericData.etat} />
-                                <PredictionPanel location={atmosphericData.city} />
+                                { !atmosphericPrevisionLoading && atmosphericPrevision  ? <PredictionPanel dataPrevision ={atmosphericPrevision} />: <Skeleton/>}
                             </TabPanel>
                             <TabPanel value="2">
-                                Item Two
+                                <AirQualityMapByAqi  userPosition={position}/>
                             </TabPanel>
                         </TabContext>
                     </div>
