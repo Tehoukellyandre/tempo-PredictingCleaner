@@ -1,12 +1,12 @@
 export  type Position = {
   latitude: number;
   longitude: number;
-  accuracy: number | null;
-  altitude: number | null;
-  altitudeAccuracy: number | null;
-  heading: number | null;
-  speed: number | null;
-  timestamp: number ;
+  accuracy ?: number ;
+  altitude ?: number ;
+  altitudeAccuracy ?: number ;
+  heading ?: number ;
+  speed ?: number ;
+  timestamp ?: number ;
 };
 
 export  type UserLocation= {

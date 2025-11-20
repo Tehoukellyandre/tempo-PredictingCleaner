@@ -1,50 +1,43 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import { useGetAtmosphericData } from "@/hooks/query";
-import { useCurrentPosition } from "@/hooks/position_hook";
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import type { Position } from "..";
 
 
 const villes = [
   {
     nom: "Cotonou",
-    coordonnees: { lat: 6.3703, lon: 2.3912 },
+    coordonnees: { latitude: 6.3703, longitude: 2.3912 },
   },
   {
     nom: "Paris",
-    coordonnees: { lat: 48.8566, lon: 2.3522 },
+    coordonnees: { latitude: 48.8566, longitude: 2.3522 },
   },
   {
     nom: "Tokyo",
-    coordonnees: { lat: 35.6762, lon: 139.6503 },
+    coordonnees: { latitude: 35.6762, longitude: 139.6503 },
   },
   {
     nom: "Montréal",
-    coordonnees: { lat: 45.5019, lon: -73.5674 },
+    coordonnees: { latitude: 45.5019, longitude: -73.5674 },
   },
 ];
 
-export default function SelectVilles() {
-  const [villeSelectionnee, setVilleSelectionnee] = useState("");
-  const [coordonnees, setCoordonnees] = useState(null);
+export default function SelectVilles({onPositionChange}: { onPositionChange : (coord : Position)=> void}) {
+  const [villeSelectionnee, setVilleSelectionnee] = useState<string| undefined>("");
+  const [coordonnees, setCoordonnees] = useState<Position|undefined>(undefined);
 
 
-
-  const handleChange = (event) => {
+  const handleChange = useCallback((event: { target: { value: string; }; }) => {
     const villeChoisie = villes.find((v) => v.nom === event.target.value);
-    setVilleSelectionnee(villeChoisie.nom);
-    setCoordonnees(villeChoisie.coordonnees);
-  };
+    setVilleSelectionnee(villeChoisie?.nom);
+    setCoordonnees(villeChoisie?.coordonnees);
+    if(villeChoisie)
+      onPositionChange(villeChoisie.coordonnees) 
+  },[]);
 
-  // useEffect(()=>{
-  //   setPosition(coordonnees) ;
-  //   queryClient.invalidateQueries({ queryKey: ['previsionsAirData'] })
-        
-  // },[coordonnees])
 
   return (
     <Box
@@ -60,7 +53,7 @@ export default function SelectVilles() {
       }}
     >
       <Typography variant="h6" textAlign="center">
-        🌍 Sélectionne une ville
+        🌍 select an Citie
       </Typography>
 
       <TextField
