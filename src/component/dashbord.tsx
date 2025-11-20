@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TabList from '@mui/lab/TabList';
 import Tab from '@mui/material/Tab';
 import TabPanel from '@mui/lab/TabPanel';
@@ -11,17 +11,28 @@ import { useGetAtmosphericData, useGetAtmosphericPrevisionData } from "@/hooks/q
 import { AirQualityMetrics } from "./display_give_organic";
 import { PredictionPanel} from "@/component/prediction_panel"
 import { AirQualityMapByAqi } from "./air_quality_map";
-import SelectVilles from "./SelectCities";
+import SelectVilles from "./Select_cities";
+import { useQueryClient } from '@tanstack/react-query'
+import { Maper } from "./map";
+import type { Position } from "..";
 // import { AirForecastChart } from "./SelectCities";
 
 export function Dashboard() {
     const [value, setValue] = useState('1');
-    const { position, error, loading  } = useCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
+    const { position, error, loading , setPosition } = useCurrentPosition({ enableHighAccuracy: true, timeout: 10000 });
     const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+    const queryClient = useQueryClient()
     const { data: atmosphericData, isLoading: atmosphericLoading } = useGetAtmosphericData(position ? position : null);
     const {data : atmosphericPrevision , isLoading : atmosphericPrevisionLoading }  = useGetAtmosphericPrevisionData(position ? position : null)
+    const handleChangePosition= useCallback((coordonnees : Position)=>{
+         setPosition(coordonnees)
+         queryClient.invalidateQueries({queryKey: ['airData', position?.latitude, position?.longitude]})
+    },[])
+
+
+    console.log(position) 
     return (
         <>
             {!atmosphericLoading &&  atmosphericData ? (
@@ -38,7 +49,7 @@ export function Dashboard() {
                                 </p>
                             </div>
                             <div className="flex flex-wrap gap-3">
-                                <SelectVilles />
+                                <SelectVilles  onPositionChange = {handleChangePosition} />
                             </div>
                         </div>
 
@@ -46,7 +57,6 @@ export function Dashboard() {
                             <TabList
                                 className="grid w-full max-w-md grid-cols-2"
                                 onChange={handleChange}
-                                aria-label="lab API tabs example"
                             >
                                 <Tab
                                     icon={<BarChart3 className="h-4 w-4" />}
@@ -69,6 +79,7 @@ export function Dashboard() {
                             </TabPanel>
                             <TabPanel value="2">
                                 <AirQualityMapByAqi  userPosition={position}/>
+                                {/* <Maper  position={position}/> */}
                             </TabPanel>
                         </TabContext>
                     </div>
