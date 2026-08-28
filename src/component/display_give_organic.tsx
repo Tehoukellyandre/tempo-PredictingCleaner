@@ -1,5 +1,3 @@
-"use client"
-
 import { Card } from "@mui/material"
 import { TrendingUp, TrendingDown, Minus} from "lucide-react"
 import type { Pollutants } from ".."

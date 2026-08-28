@@ -35,5 +35,5 @@ export function useCurrentPosition(options = {}) {
     return () => { mounted = false; };
   }, [JSON.stringify(options)]); 
 
-  return { position, error, loading };
+  return { position, error, loading  , setPosition};
 }

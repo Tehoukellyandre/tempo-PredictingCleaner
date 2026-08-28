@@ -1,10 +1,7 @@
 import Alert from "@mui/material/Alert"
 import Typography from "@mui/material/Typography"
-import type { Position } from "..";
-import { useGetAtmosphericPrevisionData } from "@/hooks/query";
 import { useMemo } from "react";
 import { Skeleton } from "@mui/material";
-import { useCurrentPosition } from "@/hooks/position_hook";
 
 
 export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrevision } :{ city:string , aqi : string , status: string  , dataPrevision: any }) {
@@ -42,7 +39,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air modérée
             </Typography>
-            {temps && `La qualité de l'air à {city} est modérée (AQI: {aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`}
+            { !temps && `La qualité de l'air à ${city} est modérée (AQI: ${aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`}
            {temps && ` Demain la qualité de l'air à ${city} sera  modérée (AQI: ${aqi}). Les personnes sensibles peuvent envisager de limiter les activités intenses à l'extérieur.`  }
           </Alert>
         );
@@ -60,7 +57,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air mauvaise
             </Typography>
-            {temps && `La qualité de l'air à ${city} est mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
+            {!temps && `La qualité de l'air à ${city} est mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           {temps && `Demain la qualité de l'air à ${city} sera mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
@@ -78,8 +75,8 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air très mauvaise
             </Typography>
-            {temps && `La qualité de l'air à ${city} est très mauvaise (AQI: ${aqi}). Évitez les activités extérieures autant que possible.`}
-          {temps && `Demain la qualité de l'air à ${city} sera très trmauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
+            {!temps && `La qualité de l'air à ${city} est très mauvaise (AQI: ${aqi}). Évitez les activités extérieures autant que possible.`}
+          {temps && `Demain la qualité de l'air à ${city} sera très mauvaise (AQI: ${aqi}). Limitez les activités extérieures, surtout pour les personnes sensibles.`}
           </Alert>
         );
       case "Dangereux":
@@ -97,7 +94,7 @@ export function AlertPanel({city , aqi ,status , dataPrevision : atmosphericPrev
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
               Qualité de l'air dangereuse
             </Typography>
-           {temps &&` La qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
+           {!temps &&` La qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
          {temps && ` Demain la  qualité de l'air à ${city} est dangereuse (AQI: ${aqi}). Restez à l'intérieur et suivez les recommandations des autorités sanitaires.`}
           </Alert>
         );
